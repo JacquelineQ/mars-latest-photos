@@ -56,7 +56,10 @@ function FetchCuriosityPhotos() {
         //     ))}
         // </ul>
         // </div>
+        <>
+        <h1>Latest Photos from the Curiosity Rover</h1>
         <DataTable columns={columns} data={photos} pagination />
+        </>
     );
 }
 

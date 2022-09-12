@@ -13,8 +13,12 @@ function FetchCuriosityPhotos() {
           selector: (row) => row.id
         },
         {
-          name: "Sol",
+          name: "Matian Sol",
           selector: (row) => row.sol
+        },
+        {
+            name: "Earth Date",
+            selector: (row) => row.earth_date
         },
         {
           name: "Camera",

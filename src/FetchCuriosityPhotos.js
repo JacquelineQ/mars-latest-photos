@@ -29,8 +29,8 @@ function FetchCuriosityPhotos() {
         },
         {
           name: "Image",
-          cell: (props) => <img src={props.img_src} width={60} alt="Player" data-tag="allowRowEvents" target="_blank" />,
-          
+          cell: (props) => <a href={props.img_src} target="_blank"><img src={props.img_src} width={60} alt="Mars"  /></a>,
+         
         }
       ];
       

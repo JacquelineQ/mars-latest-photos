@@ -1,0 +1,446 @@
+API key = h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS
+
+Query for latest Curiosity photos:
+https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?api_key=h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS
+
+Query for lastest Perseverance photos:
+https://api.nasa.gov/mars-photos/api/v1/rovers/perseverance/latest_photos?api_key=h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS
+
+9/4/22:
+
+Will need to consider whether all of the cameras have photos worth displaying/that are still active.
+Some were just for descent etc... will have to see if they still do much if anything.
+Some things like chem cams may not have photos interesting to most, but will have to decide
+if its easier just to keep them in.
+
+May be worth displaying imgs from "most interesting" cameras first, not sure how much extra work it would be.
+
+Going in with the assumption that there is a different number of photos each day.
+
+Perseverance has about 4x as many photos in each batch it seems (more cameras)
+
+Down side to not including Spirit and Opp: They had panoramic cams, probably awesome photos from those
+
+Curiosity example response shows that the structure of the response is an array with thirty objects,
+each object containing a structure like:
+
+0: Object
+ id: 1024831
+ sol: 3581
+▶camera: Object
+ img_src: "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/03581/opgs/edr/ccam/CR0_715391679EDR_F0971170CCAM03580M_.JPG"
+ earth_date: "2022-09-02"
+▶rover: Object
+
+So I need to iterate over the array, then retrieve the img_src from each object (will need map function as it returns a new array)
+
+Similar question on SO:
+https://stackoverflow.com/questions/19590865/from-an-array-of-objects-extract-value-of-a-property-as-array
+
+Code and question:
+
+objArray = [ { foo: 1, bar: 2}, { foo: 3, bar: 4}, { foo: 5, bar: 6} ];
+
+I want to extract a field from each object, and get an array containing
+ the values, for example field foo would give array [ 1, 3, 5 ].
+
+ I can do this with this trivial approach:
+
+ function getFields(input, field) {
+    var output = [];
+    for (var i=0; i < input.length ; ++i)
+        output.push(input[i][field]);
+    return output;
+}
+
+var result = getFields(objArray, "foo"); // returns [ 1, 3, 5 ]
+
+Solution:
+
+let result = objArray.map(a => a.foo);
+
+OR 
+
+let result = objArray.map(({ foo }) => foo)
+
+Additional suggestion:
+
+You can also check:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+
+
+///
+Tentative structure for app:
+
+User chooses rover
+Make get request to that rover
+Use map function on the array of object responss to create an array with all of the img_src's 
+*Possibly filter out responses from some cameras/use conditionals to order photos via camera
+**Possibly display names of cameras with photos, giving user option to pick which photos to access??
+    Cam names are in the object, so I wouldnt be able to filter them out using easy map solution above
+Return images to User
+
+*Future functionality:
+Once I can develop the backend, give users the option to create accounts and save favorites photos
+
+///
+
+CHEMCAM definitely produces less interesting photos but prioritizing a certain cameras before others may
+be difficult. Not all latest photos contain results from all cameras. Latest Curiosity request contained
+onyl photos from NAVCAM and CHEMCAM
+
+**Latest photos from Perseverance not working???
+I just get a bunch of symbols and not a photo
+Will definitely have to include some kind of error catch for this
+Not sure where the problem is
+
+Was wondering if it was isolated to a specific camera (NAVCAMLEFT) but Mast Camera gave same issue
+
+img_src from Percy that doesnt work:
+https://mars.nasa.gov/mars2020-raw-images/pub/ods/
+surface/sol/00547/ids/edr/browse/zcam/ZR0_0547_0715499393_707EBY_N0265150ZCAM03431_1100LMJ01_1200.jpg
+
+img_src from Curiosity that does work:
+https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/03581/opgs/edr/ccam/CR0_715391679EDR_F0971170CCAM03580M_.JPG
+
+img_src from different query on Percy that does work:
+http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG
+
+Main difference that I noticed was JPG vs jpg, SO says this means that one (not sure which) came directly from the camera
+while another was saved.
+
+Damn now I cant find the correct SO page.
+
+This app does something similar, displaying one image at a time, and several of the latest from Percy (notably NAVCAM Left)
+are not working. Guess its not a huge deal, but ideally I should be able to filter those out/include an error message:
+
+https://photos-from-mars.anvil.app
+
+While I dont like that this app doesnt sort your photos, it may be a good idea to display one at a time 
+
+///
+
+Can possibly update app to give info on where the rover is at the time/general updates?
+May not be very relevant considering so litterl of mars has specific names until we visit it?
+
+Interactive Map of Curiosity's journey and current location:
+
+https://mars.nasa.gov/msl/mission/where-is-the-rover/
+
+Can possibly just describe major landmarks and their location relative to Curiosity, they only change so often
+
+Curiosity Mission Updates:
+
+https://mars.nasa.gov/msl/mission-updates/
+
+Interactive Perseverance map:
+
+https://mars.nasa.gov/mars2020/mission/where-is-the-rover/
+
+Percy Rover updates although slightly different in content/style than Curiosity mission updates:
+
+https://mars.nasa.gov/mars2020/mission/status/
+
+///
+
+9/5/22
+
+Talked to Muhammad and am going the difficult sorting route. Need to look up react tables which he recommends for displaying
+the photos, apparently they have a lot of built in functionality for filtering.
+
+So I need to access the img_src in the photo object, as well as the camera name within the camera object (which is nested
+within the photo object). Then create a new object for each photo with img_src and camera name properties, access and sort 
+those by camera name (possibly using Object.values)
+
+Good thing I started looking this up because I found that the first thing I have to do after getting the response
+is to use JSON.pars() to stringify the response.
+
+SO:
+https://stackoverflow.com/questions/4935632/parse-json-in-javascript
+
+const json = '{ "fruit": "pineapple", "fingers": 10 }';
+const obj = JSON.parse(json);
+console.log(obj.fruit, obj.fingers);
+
+As far as sorting through the nested object/array, found a good SO source.
+
+SO: 
+https://stackoverflow.com/questions/11922383/how-can-i-access-and-process-nested-objects-arrays-or-json
+
+Response (at least the section relevant to this project, response has a LOT of good info for more complex things and
+I should definitely refer to this again in the future):
+*** 
+
+JavaScript has only one data type which can contain multiple values: Object. An Array is a special form of object.
+
+(Plain) Objects have the form
+
+{key: value, key: value, ...}
+Arrays have the form
+
+[value, value, ...]
+Both arrays and objects expose a key -> value structure. Keys in an array must be numeric, whereas any 
+string can be used as key in objects. The key-value pairs are also called the "properties".
+
+Properties can be accessed either using dot notation
+
+const value = obj.someProperty;
+or bracket notation, if the property name would not be a valid JavaScript identifier name [spec], 
+OR THE NAME IS THE VALUE OF A VARIABLE:
+
+// the space is not a valid character in identifier names
+const value = obj["some Property"];
+
+// property name as variable
+const name = "some Property";
+const value = obj[name];
+
+FOR THAT REASON, ARRAY ELEMENTS CAN ONLY BE ACCESSED USING BRACKET NOTATION:
+
+const value = arr[5]; // arr.5 would be a syntax error
+
+// property name / index as variable
+const x = 5;
+const value = arr[x];
+
+Accessing nested data structures
+
+A nested data structure is an array or object which refers to other arrays or objects, i.e. its values are arrays or objects. Such structures can be accessed by consecutively applying dot or bracket notation.
+
+Here is an example:
+
+const data = {
+    code: 42,
+    items: [{
+        id: 1,
+        name: 'foo'
+    }, {
+        id: 2,
+        name: 'bar'
+    }]
+};
+Let's assume we want to access the name of the second item.
+
+Here is how we can do it step-by-step:
+
+As we can see data is an object, hence we can access its properties using dot notation.
+The items property is accessed as follows:
+
+data.items
+The value is an array, to access its second element, we have to use bracket notation:
+
+data.items[1]
+This value is an object and we use dot notation again to access the name property. So we eventually get:
+
+const item_name = data.items[1].name;
+
+Alternatively, we could have used bracket notation for any of the properties, especially if the name 
+contained characters that would have made it invalid for dot notation usage:
+
+const item_name = data['items'][1]['name'];
+***
+
+As I noted in all caps, I'll need to use bracket notation to access the nested layers since I will be assigning names to 
+variables
+
+Also worth checking out the Data Structures: Objects and Arrays chapter in Eloquent Javascript.
+
+//
+I'll need to extract the img src and camera name and place each into their own arrays, then merge the arrays into an object.
+
+SO:
+https://stackoverflow.com/questions/67744936/merge-two-arrays-to-multiple-objects
+
+///
+Only issue is that this seems to have you manually enter each key/value pair. I cant do it that way. Hmmm...
+
+///
+
+Okay maybe I was thinking about this the wrong way. Instead of extracting img_src: url and cam_name: CAMNAME as two objects
+with key/value pairs, I think I can just extra the urls into one array, and the CAMNAME value (acronym) to its own array,
+then merge the two into an object where CAMNAME is the key and the url is the value (or vice versa) and then use
+Object.values/keys to control the conditional statements/sorting. In which case I can use this solution from SO:
+
+https://stackoverflow.com/questions/39127989/create-an-object-from-an-array-of-keys-and-an-array-of-values/39128136#39128136
+
+Question:
+
+I have two arrays: newParamArr and paramVal.
+
+Example values in the newParamArr array: [ "Name", "Age", "Email" ].
+
+Example values in the paramVal array: [ "Jon", 15, "jon@gmail.com" ].
+
+I need to create a JavaScript object that places all of the items in the array in the same object. 
+For example { [newParamArr[0]]: paramVal[0], [newParamArr[1]]: paramVal[1], ... }.
+
+In this case, the result should be { Name: "Jon", "Age": 15, "Email": "jon@gmail.com" }.
+
+The lengths of the two arrays are always the same, but the length of arrays can increase or decrease. 
+That means newParamArr.length === paramVal.length will always hold.
+
+Possible answers (theres a few):
+
+1)
+you can use Object.assign
+result = Object.assign(...keys.map((k, i) => ({[k]: values[i]})))
+
+2)
+or the object spread syntax (ES2018):
+result = keys.reduce((o, k, i) => ({...o, [k]: values[i]}), {})
+
+3)
+or Object.fromEntries (ES2019):
+Object.fromEntries(keys.map((_, i) => [keys[i], values[i]]));
+
+///
+
+Ooof...using JSON.parse() on this seems more difficult than I thought...
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
+
+THANKFULLY I DONT NEED IT!!
+
+
+9/12/22
+
+This YT video on React tables also provides great breakdown on how to start API call for app:
+https://www.youtube.com/watch?v=WRKEjPq75BY
+
+Seems like Tailwind may be my best bet for styling, offers more flexibility than Boostrap but offers more out of the
+box than vanilla flexbox and SASS
+
+Will need to import react-table for useTable
+
+Need to look up useMemo
+
+//Data Table from codesandbox
+
+import "./styles.css";
+import DataTable from "react-data-table-component";
+
+export default function App() {
+  return <DataTable columns={columns} data={data} pagination />;
+}
+
+const data = [
+  {
+    id: 1024831,
+    sol: 3581,
+    camera: {
+      id: 23,
+      name: "CHEMCAM",
+      rover_id: 5,
+      full_name: "Chemistry and Camera Complex"
+    },
+    img_src:
+      "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/03581/opgs/edr/ccam/CR0_715391679EDR_F0971170CCAM03580M_.JPG",
+    earth_date: "2022-09-02",
+    rover: {
+      id: 5,
+      name: "Curiosity",
+      landing_date: "2012-08-06",
+      launch_date: "2011-11-26",
+      status: "active"
+    }
+  },
+  {
+    id: 1024832,
+    sol: 3581,
+    camera: {
+      id: 23,
+      name: "CHEMCAM",
+      rover_id: 5,
+      full_name: "Chemistry and Camera Complex"
+    },
+    img_src:
+      "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/03581/opgs/edr/ccam/CR0_715390950EDR_F0971170CCAM03580M_.JPG",
+    earth_date: "2022-09-02",
+    rover: {
+      id: 5,
+      name: "Curiosity",
+      landing_date: "2012-08-06",
+      launch_date: "2011-11-26",
+      status: "active"
+    }
+  },
+  {
+    id: 1024833,
+    sol: 3581,
+    camera: {
+      id: 23,
+      name: "CHEMCAM",
+      rover_id: 5,
+      full_name: "Chemistry and Camera Complex"
+    },
+    img_src:
+      "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/03581/soas/rdr/ccam/CR0_715391679PRC_F0971170CCAM03580L1.PNG",
+    earth_date: "2022-09-02",
+    rover: {
+      id: 5,
+      name: "Curiosity",
+      landing_date: "2012-08-06",
+      launch_date: "2011-11-26",
+      status: "active"
+    }
+  },
+  {
+    id: 1024834,
+    sol: 3581,
+    camera: {
+      id: 23,
+      name: "CHEMCAM",
+      rover_id: 5,
+      full_name: "Chemistry and Camera Complex"
+    },
+    img_src:
+      "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/03581/soas/rdr/ccam/CR0_715390950PRC_F0971170CCAM03580L1.PNG",
+    earth_date: "2022-09-02",
+    rover: {
+      id: 5,
+      name: "Curiosity",
+      landing_date: "2012-08-06",
+      launch_date: "2011-11-26",
+      status: "active"
+    }
+  },
+  {
+    id: 1024822,
+    sol: 3581,
+    camera: {
+      id: 26,
+      name: "NAVCAM",
+      rover_id: 5,
+      full_name: "Navigation Camera"
+    },
+    img_src:
+      "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/03581/opgs/edr/ncam/NLB_715390777EDR_F0971170CCAM03580M_.JPG",
+    earth_date: "2022-09-02",
+    rover: {
+      id: 5,
+      name: "Curiosity",
+      landing_date: "2012-08-06",
+      launch_date: "2011-11-26",
+      status: "active"
+    }
+  }
+];
+
+const columns = [
+  {
+    name: "ID",
+    selector: (row) => row.id
+  },
+  {
+    name: "Sol",
+    selector: (row) => row.sol
+  },
+  {
+    name: "Camera",
+    selector: (row) => row.camera.name,
+    sortable: true
+  },
+  {
+    name: "Image",
+    cell: (props) => <img src={props.img_src} width={60} alt="Player" />
+  }
+];

@@ -5,20 +5,22 @@ import DataTable from "react-data-table-component";
 
 function FetchCuriosityPhotos() {
     const [photos, setPhotos] = useState([]);
-    
 
     const columns = [
         {
           name: "ID",
-          selector: (row) => row.id
+          selector: (row) => row.id,
+
         },
         {
           name: "Matian Sol",
-          selector: (row) => row.sol
+          selector: (row) => row.sol,
+          sortable: true
         },
         {
             name: "Earth Date",
-            selector: (row) => row.earth_date
+            selector: (row) => row.earth_date,
+            sortable: true
         },
         {
           name: "Camera",
@@ -27,7 +29,8 @@ function FetchCuriosityPhotos() {
         },
         {
           name: "Image",
-          cell: (props) => <img src={props.img_src} width={60} alt="Player" />
+          cell: (props) => <img src={props.img_src} width={60} alt="Player" data-tag="allowRowEvents" target="_blank" />,
+          
         }
       ];
       

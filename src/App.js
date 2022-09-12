@@ -4,6 +4,7 @@ import FetchCuriosityPhotos from "./FetchCuriosityPhotos.js";
 
 
 
+
 function App() {
   return <FetchCuriosityPhotos />;
 }

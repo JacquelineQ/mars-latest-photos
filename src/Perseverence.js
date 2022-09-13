@@ -1,9 +1,9 @@
-import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import DataTable from "react-data-table-component";
 
-function FetchCuriosityPhotos() {
+function FetchPerseverancePhotos() {
     const [photos, setPhotos] = useState([]);
 
     const columns = [
@@ -15,12 +15,10 @@ function FetchCuriosityPhotos() {
         {
           name: "Matian Sol",
           selector: (row) => row.sol,
-          sortable: true
         },
         {
             name: "Earth Date",
             selector: (row) => row.earth_date,
-            sortable: true
         },
         {
           name: "Camera",
@@ -34,10 +32,9 @@ function FetchCuriosityPhotos() {
         }
       ];
       
-    
-    useEffect(() => {
+      useEffect(() => {
         axios
-        .get("https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?api_key=h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS")
+        .get("https://api.nasa.gov/mars-photos/api/v1/rovers/perseverance/latest_photos?api_key=h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS")
         .then((response) => {
             const photos = response.data.latest_photos;
             setPhotos(photos);
@@ -46,21 +43,12 @@ function FetchCuriosityPhotos() {
     }, []);
     
     return (
-        // <div>
-        // <h1>Photos</h1>
-        // <ul>
-        //     {photos.map((photo) => (
-        //     <li key={photo.id}>
-        //         <img src={photo.img_src} alt={photo.title} />
-        //     </li>
-        //     ))}
-        // </ul>
-        // </div>
+     
         <>
-        <h1>Latest Photos from the Curiosity Rover</h1>
+        <h1>Latest Photos from the Perseverence Rover</h1>
         <DataTable columns={columns} data={photos} pagination />
         </>
     );
 }
 
-export default FetchCuriosityPhotos;
+export default FetchPerseverancePhotos;

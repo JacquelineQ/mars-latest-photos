@@ -6,4 +6,14 @@
 
 .homepage-button {
   font-size: 2rem;
+  border: solid white 3px;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  text-decoration: none;
 }
+
+/* .dataTable {
+  font-size: 30px;;
+} */
+/* Trying to change font-size of data table info but doesnt work this way */

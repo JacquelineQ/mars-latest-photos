@@ -8,11 +8,27 @@
   font-size: 2rem;
   border: solid white 3px;
   padding: 20px;
+  margin: 20px;
   width: 300px;
   text-align: center;
   text-decoration: none;
 }
 
+.homepage-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.homepage-title {
+  font-size: 4rem;
+  margin: 20px;
+}
+
+
+
+/* .rdt_Table {
+  font-weight: bold;
+} */
 /* .dataTable {
   font-size: 30px;;
 } */

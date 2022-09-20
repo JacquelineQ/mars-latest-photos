@@ -45,11 +45,10 @@ function FetchCuriosityPhotos() {
         .then((response) => {
             const photos = response.data.latest_photos;
             setPhotos(photos);
-            const timeout = setTimeout(() => {
+        
               setRows(response)
               setPending(false);
-            }, 2000);
-            return () => clearTimeout(timeout);
+          
         });
 
        
@@ -60,10 +59,10 @@ function FetchCuriosityPhotos() {
     
     return (
      
-        <>
+        <div>
         <h1>Latest Photos from the Curiosity Rover</h1>
         <DataTable columns={columns} data={photos} progressPending={pending} pagination />
-        </>
+        </div>
     );
 }
 

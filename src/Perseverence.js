@@ -39,21 +39,23 @@ function FetchPerseverancePhotos() {
         .get("https://api.nasa.gov/mars-photos/api/v1/rovers/perseverance/latest_photos?api_key=h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS")
         .then((response) => {
             const photos = response.data.latest_photos;
-            setPhotos(photos);
-            console.log(photos);
-            const timeout = setTimeout(() => {
+            // setPhotos(photos);
+            
+              setPhotos(photos)
               setRows(response)
               setPending(false);
-            }, 2000);
-            return () => clearTimeout(timeout);
         });
     }, []);
+
+    
+
+ 
     
     return (
      
         <>
         <h1>Latest Photos from the Perseverence Rover</h1>
-        <DataTable className="dataTble" columns={columns} data={photos} progressPending={pending} pagination />
+        <DataTable className="dataTable" columns={columns} data={photos} progressPending={pending} pagination />
         </>
     );
 }

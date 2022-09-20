@@ -3,8 +3,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 
+
+
 function FetchCuriosityPhotos() {
     const [photos, setPhotos] = useState([]);
+    const [pending, setPending] = React.useState(true);
+    const [rows, setRows] = React.useState([]);
+	
+    
 
     const columns = [
         {
@@ -39,15 +45,24 @@ function FetchCuriosityPhotos() {
         .then((response) => {
             const photos = response.data.latest_photos;
             setPhotos(photos);
-            console.log(photos);
+            const timeout = setTimeout(() => {
+              setRows(response)
+              setPending(false);
+            }, 2000);
+            return () => clearTimeout(timeout);
         });
+
+       
+
     }, []);
+
+
     
     return (
      
         <>
         <h1>Latest Photos from the Curiosity Rover</h1>
-        <DataTable columns={columns} data={photos} pagination />
+        <DataTable columns={columns} data={photos} progressPending={pending} pagination />
         </>
     );
 }

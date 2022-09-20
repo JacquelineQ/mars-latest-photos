@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Home.js";
 import FetchPerseverancePhotos from "./Perseverence.js";
 
-// /Users/jacqueline/Coding_Projects/mars-latest-photos/src/Perseverence.js
 
 function App() {
   return (

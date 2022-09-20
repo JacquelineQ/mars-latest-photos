@@ -5,6 +5,8 @@ import DataTable from "react-data-table-component";
 
 function FetchPerseverancePhotos() {
     const [photos, setPhotos] = useState([]);
+    const [pending, setPending] = React.useState(true);
+	  const [rows, setRows] = React.useState([]);
 
     const columns = [
         {
@@ -39,6 +41,11 @@ function FetchPerseverancePhotos() {
             const photos = response.data.latest_photos;
             setPhotos(photos);
             console.log(photos);
+            const timeout = setTimeout(() => {
+              setRows(response)
+              setPending(false);
+            }, 2000);
+            return () => clearTimeout(timeout);
         });
     }, []);
     
@@ -46,7 +53,7 @@ function FetchPerseverancePhotos() {
      
         <>
         <h1>Latest Photos from the Perseverence Rover</h1>
-        <DataTable columns={columns} data={photos} pagination />
+        <DataTable columns={columns} data={photos} progressPending={pending} pagination />
         </>
     );
 }

@@ -3,12 +3,12 @@ import React from "react";
 
 function Home() {
     return (
-        <>
-        <h1>Get Latest Photos From:</h1>
-        <a href="/Curiosity">Curiosity</a>
+        <div className="homepage">
+        <h1 className="homepage-title">Get Latest Photos From:</h1>
+        <a className="homepage-button"href="/Curiosity">Curiosity</a>
         <br></br>
-        <a href="/Perseverance">Perseverance</a>
-        </>
+        <a className="homepage-button"href="/Perseverance">Perseverance</a>
+        </div>
     )
 
 }

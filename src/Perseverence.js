@@ -53,7 +53,7 @@ function FetchPerseverancePhotos() {
      
         <>
         <h1>Latest Photos from the Perseverence Rover</h1>
-        <DataTable columns={columns} data={photos} progressPending={pending} pagination />
+        <DataTable className="dataTble" columns={columns} data={photos} progressPending={pending} pagination />
         </>
     );
 }

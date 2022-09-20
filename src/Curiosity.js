@@ -14,11 +14,6 @@ function FetchCuriosityPhotos() {
 
     const columns = [
         {
-          name: "ID",
-          selector: (row) => row.id,
-
-        },
-        {
           name: "Matian Sol",
           selector: (row) => row.sol,
         },

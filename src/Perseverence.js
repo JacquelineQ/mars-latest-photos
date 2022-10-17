@@ -31,7 +31,7 @@ function FetchPerseverancePhotos() {
       
       useEffect(() => {
         axios
-        .get("https://mars-photos.herokuapp.com//v1/rovers/perseverance/latest_photos?api_key=h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS")
+        .get("https://mars-photos.herokuapp.com//v1/rovers/perseverance/latest_photos?")
         .then((response) => {
             const photos = response.data.latest_photos;
             // setPhotos(photos);

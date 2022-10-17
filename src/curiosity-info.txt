@@ -1,6 +1,5 @@
 Query for latest Curiosity photos:
-https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?api_key=h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS
-
+https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?
 landing_date: 2012-08-06,
 launch_date: 2011-11-26
 

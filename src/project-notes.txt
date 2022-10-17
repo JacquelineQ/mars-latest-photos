@@ -1,10 +1,9 @@
-API key = h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS
+
 
 Query for latest Curiosity photos:
-https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?api_key=h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS
-
+https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?
 Query for lastest Perseverance photos:
-https://api.nasa.gov/mars-photos/api/v1/rovers/perseverance/latest_photos?api_key=h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS
+https://api.nasa.gov/mars-photos/api/v1/rovers/perseverance/latest_photos?
 
 9/4/22:
 

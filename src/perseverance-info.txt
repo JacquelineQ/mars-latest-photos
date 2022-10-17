@@ -1,5 +1,5 @@
 Query for lastest Perseverance photos:
-https://api.nasa.gov/mars-photos/api/v1/rovers/perseverance/latest_photos?api_key=h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS
+https://api.nasa.gov/mars-photos/api/v1/rovers/perseverance/latest_photos?
 
 Landing date	18 February 2021, 20:55 UTC[1] 
 MSD 52304 10:54 AMT

@@ -36,7 +36,7 @@ function FetchCuriosityPhotos() {
     
     useEffect(() => {
         axios
-        .get("https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?api_key=h2OACWIHRgevQbyXtWaIK890hECXDo7oekNSzcKS")
+        .get("https://mars-photos.herokuapp.com//api/v1/rovers/curiosity/latest_photos?")
         .then((response) => {
             const photos = response.data.latest_photos;
             setPhotos(photos);

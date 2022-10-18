@@ -4,6 +4,7 @@
   align-items: center;
   background-image: url(Mars-bg-1.jpeg);
   background-size: cover;
+  height: 100vh;
 }
 
 .homepage-button {
@@ -20,6 +21,7 @@
 .homepage-title {
   font-size: 4rem;
   margin: 20px;
+ 
 }
 
 
